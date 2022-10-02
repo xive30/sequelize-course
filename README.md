@@ -1,0 +1,5 @@
+# Sequelize course
+
+## Prerequisites
+
+* Docker
