@@ -42,4 +42,8 @@ export default class testHelpers {
         };
         return User.createNewUser(data);
     }
+    static getApp(){
+        const App = require('../src/app').default;
+        return new App().getApp();
+    }
 }
