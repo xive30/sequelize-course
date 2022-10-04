@@ -8,25 +8,27 @@ export default class Database {
         this.dbConfig = dbConfig;
         this.isTestEnvironment = this.environment === 'test';
     }
+
     async connect() {
-        // set up the namespace for transactions
+        // Set up the namespace for transactions
         const namespace = cls.createNamespace('transactions-namespace');
         Sequelize.useCLS(namespace);
-        
+
         // Create the connection
-        const {username, password, host, port, database, dialect} = this.dbConfig[this.environment];
+        const { username, password, host, port, database, dialect } =
+            this.dbConfig[this.environment];
         this.connection = new Sequelize({
-            username, 
-            password, 
-            host, 
-            port, 
-            database, 
-            dialect, 
+            username,
+            password,
+            host,
+            port,
+            database,
+            dialect,
             logging: this.isTestEnvironment ? false : console.log,
         });
 
         // Check if we connected successfully
-        await this.connection.authenticate({ logging:false});
+        await this.connection.authenticate({ logging: false });
 
         if (!this.isTestEnvironment) {
             console.log(
@@ -35,13 +37,13 @@ export default class Database {
         }
 
         // Register the models
-        registerModels(this.connection)
+        registerModels(this.connection);
 
-        // sync the models
+        // Sync the models
         await this.sync();
     }
 
-    async diconnect() {
+    async disconnect() {
         await this.connection.close();
     }
 
@@ -51,7 +53,7 @@ export default class Database {
             force: this.isTestEnvironment,
         });
 
-        if(!this.isTestEnvironment) {
+        if (!this.isTestEnvironment) {
             console.log('Connection synced successfully');
         }
     }
