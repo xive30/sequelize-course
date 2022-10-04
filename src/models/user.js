@@ -13,7 +13,7 @@ export default (sequelize) => {
             return bcrypt.hash(password, environment.saltRounds)
         }
 
-        static async CreateNewUser({
+        static async createNewUser({
             email,
             password,
             roles,
@@ -54,6 +54,9 @@ export default (sequelize) => {
                 validate: {
                     isEmail: {
                         msg: 'Not a valid email address',
+                    },
+                    notNull: {
+                        msg: 'Email is required'
                     }
                 }
             },
@@ -67,7 +70,7 @@ export default (sequelize) => {
                 validate: {
                     len: {
                         args: [2, 50],
-                        msg: 'Username must contain between 2 and 50 characters.'
+                        msg: 'Username must contain between 2 and 50 characters'
                     }
                 }
             },
@@ -98,7 +101,7 @@ export default (sequelize) => {
             },
             scopes: {
                 withPassword: {
-                    attributes: { include: [password] },
+                    attributes: { include: ['password'] },
                 }
             }
         }
@@ -109,8 +112,14 @@ export default (sequelize) => {
     }
 
     User.beforeSave(async (user, options) => {
-        const hashpassword = await User.hashPassword(user.password);
-        user.password = hashpassword;
+        if (user.password) {
+            const hashpassword = await User.hashPassword(user.password);
+            user.password = hashpassword;
+        }
+    });
+
+    User.afterCreate((user, options) => {
+        delete user.dataValues.password;
     });
 
     return User;
