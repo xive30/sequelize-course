@@ -5,6 +5,7 @@ import errorsMiddleware from './middlewares/errors';
 import { v1Routes } from './controllers';
 
 export default class App {
+    app: any;
     constructor() {
         this.app = express();
         this.app.use(

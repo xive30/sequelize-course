@@ -3,6 +3,12 @@ import { Sequelize } from 'sequelize';
 import { registerModels } from '../models';
 
 export default class Database {
+    isTestEnvironment: boolean;
+    environment: any;
+    dbConfig: any;
+    connection: any;
+    static dbConfig: any;
+    
     constructor(environment, dbConfig) {
         this.environment = environment;
         this.dbConfig = dbConfig;
@@ -57,4 +63,5 @@ export default class Database {
             console.log('Connection synced successfully');
         }
     }
+    
 }

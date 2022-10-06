@@ -1,13 +1,12 @@
 import '../src/config';
 import Database from '../src/database';
-import dbConfig from '../src/config/database';
 import request from 'supertest';
 
 let db;
 
 export default class testHelpers {
     static async startDb() {
-        db = new Database('test', dbConfig);
+        db = new Database('test', Database.dbConfig);
         await db.connect();
         return db;
     }
@@ -20,7 +19,7 @@ export default class testHelpers {
         await db.sync();
     }
 
-    static async createNewUser(options = {}) {
+    static async createNewUser(options ) {
         const models = require('../src/models').default;
         const {
             email = 'test@example.com',
@@ -48,7 +47,7 @@ export default class testHelpers {
         return new App().getApp();
     }
 
-    static async registerNewUser(options = {}) {
+    static async registerNewUser(options) {
         const {
             email = 'test@example.com',
             password = 'Test123#',

@@ -4,6 +4,13 @@ import environment from '../config/environment';
 
 export default (sequelize) => {
     class User extends Model {
+        static RefreshToken: any;
+        static Roles: any;
+        dataValues: any;
+        password: any;
+        comparePasswords: (password: any) => Promise<any>;
+
+
         static associate(models) {
             User.RefreshToken = User.hasOne(models.RefreshToken);
             User.Roles = User.hasMany(models.Role)
@@ -23,7 +30,7 @@ export default (sequelize) => {
             refreshToken,
         }) {
             return sequelize.transaction(() => {
-                let rolesToSave = [];
+                let rolesToSave;
 
                 if (roles && Array.isArray(roles)) {
                     rolesToSave = roles.map((role) => ({ role }));

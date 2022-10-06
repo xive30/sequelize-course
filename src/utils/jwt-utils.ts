@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken';
 import environment from '../config/environment';
 
 export default class JWTUtils {
-    static generateAccessToken(payload, options = {}) {
-        const {expiresIn = '1d'} = options;
-        return jwt.sign(payload, environment.jwtAccessTokenSecret, { expiresIn });
+    static generateAccessToken(payload) {
+
+        return jwt.sign(payload, environment.jwtAccessTokenSecret, { expiresIn: '1d' });
     }
 
     static generateRefreshToken(payload) {
